@@ -2,18 +2,38 @@
 
 namespace App\Controller;
 
+
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Movie;
 
-use function PHPSTORM_META\map;
 
 class MoviesController extends AbstractController
 {
-    #[Route('/movies', name: 'app_movies', methods: ['GET', 'HEAD'])]
+    // since we're using the EntityManager in multiple methods we define a property to hold it 
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->entityManager = $em;
+    }
+
+    #[Route('/movies', name: 'app_movies', methods: ['GET', 'HEAD'])]    
+    /**
+     * index
+     *
+     * @return Response
+     */
     public function index(): Response
     {
-        $movies = ["Avengers : Endgame", "Inception", "Loki", "Black Widow"];
+        $moviesRepository = $this->entityManager->getRepository(Movie::class);
+
+        // findAll() - SELECT * FROM MOVIES
+        // find(some id) - SELECT * FROM MOVIES WHERE ID = some id
+
+        $movies = $moviesRepository->findAll();
         return $this->render('movies/index.html.twig',[
             'controller_name' => 'MoviesController',
             'my_name' => 'Amine',
@@ -22,7 +42,13 @@ class MoviesController extends AbstractController
         );
     }
 
-    #[Route('/movies/{name}', name: "Movie_detail", defaults: ['name' => null], methods: ['GET'])]
+    #[Route('/movies/{name}', name: "Movie_detail", defaults: ['name' => null], methods: ['GET'])]    
+    /**
+     * getMovie
+     *
+     * @param  mixed $name
+     * @return Response
+     */
     public function getMovie($name) : Response
     {
         return $this->render('Movies/detail.html.twig', [

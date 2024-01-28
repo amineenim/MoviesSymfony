@@ -17,12 +17,13 @@
         <li>Your template at <code><a href="{{ 'C:/Users/Amine MAOURID/Desktop/symfony/my_app/templates/movies/index.html.twig'|file_link(0) }}">templates/movies/index.html.twig</a></code></li>
     </ul>
     <p>This is my first render in symfony, i'm so excited, my Name is {{ my_name }}</p>
+    <h3>{{ appName }}</h3>
     <div>
         <p>Here is the list of all Movies </p>
         <h4> current Template name : {{ _self }} </h4>
         <ul>
             {% for movie in movies %}
-                <li>{{ movie }}</li>
+                <li>{{ movie.title }}</li>
             {% endfor %}
         </ul>
     </div>
