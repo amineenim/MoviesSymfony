@@ -1,0 +1,1 @@
+console.log('this is a test for running js in my symfony project !!');
