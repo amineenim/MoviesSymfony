@@ -42,32 +42,15 @@ class MoviesController extends AbstractController
         );
     }
 
-    #[Route('/movies/{name}', name: "Movie_detail", defaults: ['name' => null], methods: ['GET'])]    
-    /**
-     * getMovie
-     *
-     * @param  mixed $name
-     * @return Response
-     */
-    public function getMovie($name) : Response
+    #[Route('/movies/{name}', name:'getMovieByName', defaults:['name' => null])]
+    public function getMovieByName($name) : Response
     {
-        return $this->render('Movies/detail.html.twig', [
-            "name" => $name,
-            "controller_name" => 'MoviesController',
-            "method_name" => 'getMovie',
-            "last_name" => 'Maourid',
-        ]);
-    }
-    
-    #[Route('/amine', name: 'amine_page', methods: ['GET'])]
-    public function getAmine() : Response
-    {
-        return $this->render('movies/amine.html.twig', [
-            "myName" => "amine maourid",
-            "age" => "28",
-            "nationality" => "moroccan",
-            "controller" => "MoviesController",
-            "method" => "getAmine",
-        ]);
+        // get the movie by name 
+        $moviesRepository = $this->entityManager->getRepository(Movie::class);
+        $movieByName = $moviesRepository->findBy(['title' => $name]);
+        if(empty($movieByName)){
+            return $this->render('movies/notfound.html.twig', ["name" => $name]);
+        }
+        return $this->render('movies/detail.html.twig', ["movie" => $movieByName[0]]);
     }
 }

@@ -1,14 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block title %}Movie Detail{% endblock %}
 {% block body %}
-<p>
-    here i'am rendering details for a single Movie with name {{ name }}<br/>
-    this route calls the method {{ method_name }} in controller {{ controller_name }}
-    {% if last_name %}
-        <h3>{{ last_name }}</h3>
-    {% else %}
-        <h3>No Last name Found</h3>
-    {% endif %}
-</p>
+    <h3>Movie Detail</h3>
+    <h4>{{ movie.title }}</h4>
+    <p>{{ movie.description }} , It was relead {{ movie.releaseYear }}</p>
+    <ul> The main actores of the Movie are :</ul>
+        {% for actor in movie.actors %}
+            <li> {{ actor.name }} </li>
+        {% endfor %}
 {% endblock %}
  
